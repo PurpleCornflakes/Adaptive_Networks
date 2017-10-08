@@ -8,7 +8,7 @@ class AdaptiveNet:
 
         self.N = N
         self.M = M
-        self.T = 0.33 # threshold
+        self.T = 0.35 # threshold
         self.input_node = input_node
         self.desired_node = desired_node
         self.net = np.zeros((N,M), dtype = np.int)
@@ -64,7 +64,7 @@ class AdaptiveNet:
         lines = ""
         for i in range(self.N):
             lines += str.join("", map(conv, self.net[i]))+"\n"
-        lines += "iter = {0:d}, threshold = {1:.3f}".format(t+1, self.T)+"\n"
+        lines += "iter = {0:d}, threshold = {1:.3f}".format(t, self.T)+"\n"
         print(lines, end="")
         print("\033[{}A".format(self.N+2))
 
@@ -91,7 +91,7 @@ class AdaptiveNet:
 
 
 if __name__ == "__main__":
-    a = AdaptiveNet(64, 64, 32, 8)
+    a = AdaptiveNet(16, 16, 8, 3)
     a.iterate(times = 40000, pause_time = 0)
 
 
