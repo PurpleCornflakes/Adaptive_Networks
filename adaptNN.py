@@ -1,7 +1,7 @@
 import numpy as np
 import time
 
-np.random.seed(2017)
+np.random.seed(222)
 class AdaptiveNet:
 
     def __init__(self, N, M, input_node, desired_node):
@@ -22,6 +22,8 @@ class AdaptiveNet:
         self.weights = np.random.random((N-1, M*3))
         # normalize
         self.normalize_weight()
+
+
 
     def get_new_net(self):
         new_net = self.net[:]
@@ -50,14 +52,18 @@ class AdaptiveNet:
         self.weights += r*self.weights*(1-self.weights)*tmp_old*tmp_new
         self.normalize_weight()
         self.net = new_net
+        return 0 if r == -0.1 else 1
 
     def iterate(self, times, pause_time):
+        r_seq = np.zeros((times), dtype = np.dtype('u1'))
+
         self.print_out(0)
         for i in range(times):
             time.sleep(pause_time)
-            self.one_iterate()
+            r_seq[i] = self.one_iterate()
             self.print_out(i+1)
         print("\033[{}B".format(self.N))
+        return r_seq
 
     def print_out(self, t):
         conv = lambda x: "\033[01;36m-\033[00m " if x==0 else "\033[01;31mo \033[00m"
@@ -91,7 +97,8 @@ class AdaptiveNet:
 
 
 if __name__ == "__main__":
-    a = AdaptiveNet(16, 16, 8, 3)
-    a.iterate(times = 40000, pause_time = 0)
+    a = AdaptiveNet(64, 64, 33, 1)
+    r_seq = a.iterate(times = 40000, pause_time = 0)
+    np.save("r_seq", r_seq)
 
 

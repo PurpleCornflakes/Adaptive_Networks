@@ -26,7 +26,7 @@ class AdaptiveNet:
             self.desired = desired_green
 
         self.net = np.zeros((N,M), dtype = np.int)
-        self.positive_series = []
+        self.positive_series = np.array([])
         # initialize weights
         # every successive 3 in this array corresponds to the 3 lines
         # o o o
@@ -95,7 +95,7 @@ class AdaptiveNet:
 
         if len(self.positive_series) == 250:
             self.positive_series = np.delete(self.positive_series,[0])
-        self.positive_series = np.append(self.positive_series,is_positive)
+        self.positive_series = np.append(self.positive_series, is_positive)
             
         return is_positive
 
